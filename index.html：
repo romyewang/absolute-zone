@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超级玛丽任务管理系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="mario-header">
+            <h1>🍄 任务和精力资源管理</h1>
+            <div class="score-display">积分: <span id="totalScore">0</span></div>
+        </header>
+        
+        <nav class="module-nav">
+            <button class="nav-btn active" data-module="work">💼 工作</button>
+            <button class="nav-btn" data-module="study">📚 学习</button>
+            <button class="nav-btn" data-module="personal">🌟 个人成长</button>
+        </nav>
+        
+        <main>
+            <div class
+="module-content" id="work-module">
+                <h2>💼 工作任务管理</h2>
+<div class="task-form">
+                    <input type="text" id="work-task-input" placeholder="输入新任务...">
+<button onclick="addTask('work')">添加任务</button>
+</div>
+                <div class="task-list" id="work-task-list"></div>
+</div>
+            
+            <div class="module-content hidden" id="study-module">
+<h2>📚 学习任务管理</h2>
+                <div class="task-form">
+<input type="text" id="study-task-input" placeholder="输入新任务...">
+<button onclick="addTask('study')">添加任务</button>
+</div>
+                <div class="task-list" id="study-task-list"></div>
+</div>
+            
+            <div class="module-content hidden" id="personal-module">
+<h2>🌟 个人成长任务</h2>
+                <div class="task-form">
+<input type="text" id="personal-task-input" placeholder="输入新任务...">
+<button onclick="addTask('personal')">添加任务</button>
+</div>
+                <div class="task-list" id="personal-task-list"></div>
+</div>
+        </main>
+        
+        <div class="document-section">
+<h3>📎 文档管理</h3>
+            <input type="file" id="file-upload" multiple>
+<div id="document-list"></div>
+        </div>
+</div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
