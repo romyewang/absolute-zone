@@ -7,55 +7,96 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="mario-header">
-            <h1>🍄 任务和精力资源管理</h1>
-            <div class="score-display">积分: <span id="totalScore">0</span></div>
+    <div class="app-container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">🍄 超级玛丽任务管理</h1>
+                <div class="score-display">
+                    <span class="score-label">积分:</span>
+                    <span id="totalScore" class="score-value">0</span>
+                </div>
+            </div>
         </header>
-        
-        <nav class="module-nav">
-            <button class="nav-btn active" data-module="work">💼 工作</button>
-            <button class="nav-btn" data-module="study">📚 学习</button>
-            <button class="nav-btn" data-module="personal">🌟 个人成长</button>
+
+        <!-- 导航 -->
+        <nav class="navigation">
+            <button class="nav-btn active" da
+ta-module="work">
+                <span class="nav-icon">💼</span>
+                <span class="nav-text">工作</span>
+            </button>
+            <button class="nav-btn" data-module="study">
+                <span class="nav-icon">📚</span>
+                <span class="nav-text">学习</span>
+            </button>
+            <button class="nav-btn" data-module="personal">
+                <span class="nav-icon">🌟</span>
+                <span class="nav-text">个人成长</span>
+            </button>
         </nav>
-        
-        <main>
-            <div class
-="module-content" id="work-module">
-                <h2>💼 工作任务管理</h2>
-<div class="task-form">
-                    <input type="text" id="work-task-input" placeholder="输入新任务...">
-<button onclick="addTask('work')">添加任务</button>
-</div>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 工作模块 -->
+            <section class="module active" id="work-module">
+                <div class="module-header">
+                    <h2>💼 工作任务</h2>
+                    <div class="module-score">积分: <sp
+an id="work-score">0</span></div>
+                </div>
+                <div class="task-form">
+                    <input type="text" id="work-task-input" placeholder="输入新任务..." class="task-input">
+                    <button class="add-btn" onclick="addTask('work')">添加任务</button>
+                </div>
                 <div class="task-list" id="work-task-list"></div>
-</div>
-            
-            <div class="module-content hidden" id="study-module">
-<h2>📚 学习任务管理</h2>
+            </section>
+
+            <!-- 学习模块 -->
+            <section class="module" id="study-module">
+                <div class="module-header">
+                    <h2>📚 学习任务</h2>
+                    <div class="module-score">积分: <span id="study-score">0</span></div>
+                </div>
                 <div class="task-form">
-<input type="text" id="study-task-input" placeholder="输入新任务...">
-<button onclick="addTask('study')">添加任务</button>
-</div>
+                    <input type="text" id="study-task-input" placeholder="输入新任务...
+" class="task-input">
+                    <button class="add-btn" onclick="addTask('study')">添加任务</button>
+                </div>
                 <div class="task-list" id="study-task-list"></div>
-</div>
-            
-            <div class="module-content hidden" id="personal-module">
-<h2>🌟 个人成长任务</h2>
+            </section>
+
+            <!-- 个人成长模块 -->
+            <section class="module" id="personal-module">
+                <div class="module-header">
+                    <h2>🌟 个人成长</h2>
+                    <div class="module-score">积分: <span id="personal-score">0</span></div>
+                </div>
                 <div class="task-form">
-<input type="text" id="personal-task-input" placeholder="输入新任务...">
-<button onclick="addTask('personal')">添加任务</button>
+                    <input type="text" id="personal-task-input" placeholder="输入新任务..." class="task-input">
+                    <button class="add-btn" onclick="addTask('personal')">添加任务</button>
+                </div>
+                <div class="task
+-list" id="personal-task-list"></div>
+            </section>
+</main>
+
+        <!-- 文档管理 -->
+        <section class="document-section">
+<div class="section-header">
+                <h3>📎 文档管理</h3>
 </div>
-                <div class="task-list" id="personal-task-list"></div>
+            <div class="file-upload-area">
+<input type="file" id="file-upload" multiple class="file-input">
+<label for="file-upload" class="upload-label">
+<span class="upload-icon">📤</span>
+<span>点击上传文档</span>
+                </label>
 </div>
-        </main>
-        
-        <div class="document-section">
-<h3>📎 文档管理</h3>
-            <input type="file" id="file-upload" multiple>
-<div id="document-list"></div>
-        </div>
-</div>
-    
+            <div class="document-list" id="document-list"></div>
+</section>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
