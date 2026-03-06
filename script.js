@@ -1,130 +1,96 @@
-// 任务和精力资源管理系统
-class TaskManager {
-    constructor() {
-        this.tasks = JSON.parse(localStorage.getItem('tasks')) || {
-            work: [],
-            study: [],
-            personal: []
-        };
-        this.documents = JSON.parse(localStorage.getItem('documents')) || [];
-        this.scores = JSON.parse(localStorage.getItem('scores')) || {
-            work: 0,
-            study: 0,
-            personal: 0
-        };
-        this.init();
-    }
-
-    init() {
+// 简化版任务管理器
+let taskManager = {
+    tasks: JSON.parse(localStorage.getItem('tasks')) || {
+work: [],
+        study: [],
+        personal: []
+},
+    scores: JSON.parse(localStorage.getItem('scores')) || {
+work: 0,
+        study: 0,
+        personal: 0
+    },
+documents: JSON.parse(localStorage.getItem('documents')) || [],
+init() {
         this.loadTasks();
-        this.loadDocuments();
-        this.updateScoreDisplay();
-        this.setupEventListeners();
-    }
+        this.updateScores();
+this.setupEventListeners();
+    },
 
     setupEventListeners() {
-        // 模块切换
+// 导航按钮
         document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                this.sw
-itchModule(e.target.dataset.module);
-            });
-});
-
-        // 文件上传
-        const fileUpload = document.getElementById('file-upload');
-if (fileUpload) {
-            fileUpload.addEventListener('change', (e) => {
-this.handleFileUpload(e.target.files);
-});
-        }
-
-        // 添加任务按钮
-        document.querySelectorAll('.task-form button').forEach(button => {
-button.addEventListener('click', (e) => {
-const module = e.target.closest('.module-content').id.replace('-module', '');
-this.addTask(module);
-            });
-});
-
-        // 输入框回车事件
-        document.querySelectorAll('input[type="text"]').forEach(input => {
-input.addEventListener('keypress', (e) => {
-if (e.key === 'Enter') {
-                    const module = e.target.id.split('-')[0];
-this.addTask(module);
-                }
+btn.addEventListener('click', (e) => {
+this.switchModule(e.currentTarget.dataset.module);
 });
         });
-    }
+
+        // 文件上传
+        document.getElementById('file-upload').addEventListener('change', (e) => {
+this.handleFileUpload(e.target.files);
+});
+    },
 
     switchModule(module) {
-// 更新按钮状态
-        document.querySelectorAll('.nav-btn').forEach(btn => {
+        // 更新导航
+document.querySelectorAll('.nav-btn').forEach(btn => {
 btn.classList.remove('active');
         });
 document.querySelector(`[data-module="${module}"]`).classList.add('active');
 // 显示对应模块
-        document.querySelectorAll('.module-content').forEach(content => {
-content.classList.add('hidden');
+        document.querySelectorAll('.module').forEach(mod => {
+mod.classList.remove('active');
         });
-document.getElementById(`${module}-module`).classList.remove('hidden');
-}
+document.getElementById(`${module}-module`).classList.add('active');
+},
 
     addTask(module) {
         const input = document.getElementById(`${module}-task-input`);
-const taskText = input.value.trim();
-if (taskText) {
-            const task = {
-id: Date.now(),
-                text: taskText,
-completed: false,
-                createdAt: new Date().toISOString()
+const text = input.value.trim();
+        
+        if (text) {
+const task = {
+                id: Date.now(),
+text: text,
+                completed: false,
+createdAt: new Date().toISOString()
 };
-
+            
             this.tasks[module].push(task);
 this.saveTasks();
             this.loadTasks();
 input.value = '';
         }
-    }
+    },
 
     completeTask(module, taskId) {
 const task = this.tasks[module].find(t => t.id === taskId);
 if (task) {
             task.completed = !task.completed;
-this.updateScore(module, task.completed ? 10 : -10);
+this.scores[module] += task.completed ? 10 : -10;
+this.saveTasks();
+            this.saveScores();
+this.loadTasks();
+            this.updateScores();
 }
-    }
+    },
 
     deleteTask(module, taskId) {
-        this.tasks[module] = this.tasks[module].filter(t => t.id !== taskId);
+this.tasks[module] = this.tasks[module].filter(t => t.id !== taskId);
 this.saveTasks();
         this.loadTasks();
-}
-
-    updateScore(module, points) {
-        this.scores[module] += points;
-this.saveScores();
-        this.updateScoreDisplay();
-}
-
-    updateScoreDisplay() {
-        const totalScore = Object.values(this.scores).reduce((a, b) => a + b, 0);
-document.getElementById('totalScore').textContent = totalScore;
-}
+},
 
     loadTasks() {
-        const modules = ['work', 'study', 'personal'];
-modules.forEach(module => {
-            const taskList = document.getElementById(`${module}-task-list`);
-if (taskList) {
-                taskList.innerHTML = '';
+        ['work', 'study', 'personal'].forEach(module => {
+const list = document.getElementById(`${module}-task-list`);
+if (list) {
+                list.innerHTML = '';
 this.tasks[module].forEach(task => {
-const taskItem = document.createElement('div');
-taskItem.className = `task-item ${task.completed ? 'completed' : ''}`;
-taskItem.innerHTML = `
-                        <span>${task.text}</span>
+const item = document.createElement('div');
+item.className = `task-item ${task.completed ? 'completed' : ''}`;
+item.innerHTML = `
+                        <span class="task-text">${task.text}</span>
 <div class="task-actions">
 <button class="task-btn complete-btn" onclick="taskManager.completeTask('${module}', ${task.id})">
 ${task.completed ? '❌' : '✅'}
@@ -134,73 +100,88 @@ ${task.completed ? '❌' : '✅'}
                             </button>
 </div>
                     `;
-taskList.appendChild(taskItem);
-});
-            }
+list.appendChild(item);
+                });
+}
         });
-    }
-handleFileUpload(files) {
-        Array.from(files).forEach(file => {
-const document = {
-                id: Date.now(),
-name: file.name,
-                type: file.type,
+    },
+
+    updateScores() {
+const total = Object.values(this.scores).reduce((a, b) => a + b, 0);
+document.getElementById('totalScore').textContent = total;
+['work', 'study', 'personal'].forEach(module => {
+const scoreEl = document.getElementById(`${module}-score`);
+if (scoreEl) {
+                scoreEl.textContent = this.scores[module];
+}
+        });
+    },
+
+    handleFileUpload(files) {
+Array.from(files).forEach(file => {
+            const doc = {
+id: Date.now(),
+                name: file.name,
 size: file.size,
-                uploadedAt: new Date().toISOString(),
-url: URL.createObjectURL(file)
-            };
-this.documents.push(document);
-            this.saveDocuments();
-this.loadDocuments();
-        });
-    }
-loadDocuments() {
-        const documentList = document.getElementById('document-list');
-if (documentList) {
-            documentList.innerHTML = '';
+                url: URL.createObjectURL(file)
+};
+            this.documents.push(doc);
+this.saveDocuments();
+            this.loadDocuments();
+});
+    },
+
+    loadDocuments() {
+        const list = document.getElementById('document-list');
+if (list) {
+            list.innerHTML = '';
 this.documents.forEach(doc => {
-                const docItem = document.createElement('div');
-docItem.className = 'document-item';
-docItem.innerHTML = `
-                    <span>📄 ${doc.name} (${this.formatFileSize(doc.size)})</span>
+                const item = document.createElement('div');
+item.className = 'document-item';
+                item.innerHTML = `
+<span>📄 ${doc.name} (${this.formatSize(doc.size)})</span>
 <div>
                         <a href="${doc.url}" download="${doc.name}">⬇️</a>
 <button onclick="taskManager.deleteDocument(${doc.id})">🗑️</button>
 </div>
                 `;
-                documentList.appendChild(docItem);
+                list.appendChild(item);
 });
         }
-    }
+    },
 
-    deleteDocument(docId) {
-this.documents = this.documents.filter(doc => doc.id !== docId);
+    deleteDocument(id) {
+this.documents = this.documents.filter(doc => doc.id !== id);
 this.saveDocuments();
         this.loadDocuments();
-}
+},
 
-    formatFileSize(bytes) {
-        if (bytes === 0) return '0 Bytes';
-const k = 1024;
+    formatSize(bytes) {
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-const i = Math.floor(Math.log(bytes) / Math.log(k));
-return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
+if (bytes === 0) return '0 Bytes';
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+},
 
     saveTasks() {
         localStorage.setItem('tasks', JSON.stringify(this.tasks));
-}
+},
+
+    saveScores() {
+        localStorage.setItem('scores', JSON.stringify(this.scores));
+},
 
     saveDocuments() {
         localStorage.setItem('documents', JSON.stringify(this.documents));
 }
+};
 
-    saveScores() {
-        localStorage.setItem('scores', JSON.stringify(this.scores));
-}
-}
-
-// 初始化应用
+// 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
-window.taskManager = new TaskManager();
+taskManager.init();
 });
+
+// 全局函数供HTML调用
+function addTask(module) {
+taskManager.addTask(module);
+}
