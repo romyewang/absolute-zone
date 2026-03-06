@@ -44,3 +44,146 @@ body {
 
 .nav-btn {
     padding: 15px 25p
+x;
+    border: none;
+    border-radius: 8px;
+    background: #4CAF50;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.nav-btn:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+.nav-btn.active {
+    background: #FF6B35;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.module-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.hidden {
+    display: none;
+}
+
+.task-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.task-form input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.task-form button {
+    padding: 1
+    0px 20px;
+    background: #FF6B35;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    background: #f9f9f9;
+}
+
+.task-item.completed {
+    background: #d4edda;
+    text-decoration: line-through;
+}
+
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.task-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.complete-btn {
+    background: #28a745;
+    color: white;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.document-section {
+    background: white;
+    padding: 20px;
+    border-ra
+    dius: 10px;
+    margin-top: 20px;
+}
+
+.document-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #eee;
+    border-radius: 10px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FF6B35, #FFD700);
+    transition: width 0.3s;
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .module-nav {
+        flex-direction: column;
+    }
+    
+    .task-form {
+        flex-direction: column;
+    }
+}
